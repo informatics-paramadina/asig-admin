@@ -61,7 +61,7 @@ const Minigame = ({ data }) => {
   );
 
   const onColumnResize = useRef((eventData) => {
-    console.log(eventData);
+    // console.log(eventData);
   });
 
   return (
@@ -72,7 +72,7 @@ const Minigame = ({ data }) => {
         rowCount={data.length}
         columnVisibility={{ visibleColumns, setVisibleColumns }}
         renderCellValue={({ rowIndex, columnId }) => {
-            console.log(data[rowIndex][columnId] + " " + columnId)
+            // console.log(data[rowIndex][columnId] + " " + columnId)
             return data[rowIndex][columnId]
         }}
         inMemory={{ level: "sorting" }}

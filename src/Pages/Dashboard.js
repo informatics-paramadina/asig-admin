@@ -20,6 +20,7 @@ import Minigame from "../Utils/MinigameTable";
 
 const Dashboard = () => {
   const [talkshow, setTalkshow] = useState({});
+  const [mselect, setMselect] = useState('');
   const [game, setGame] = useState({});
   const [minigame, setMinigame] = useState({});
 
@@ -40,6 +41,7 @@ const Dashboard = () => {
         },
       })
       .then((res) => {
+        console.log(res.data);
         setGame(res.data);
       });
       axios
@@ -49,7 +51,6 @@ const Dashboard = () => {
         },
       })
       .then((res) => {
-          console.log(res.data)
         setMinigame(res.data);
       });
     return;
@@ -98,9 +99,11 @@ const Dashboard = () => {
           )}
         </EuiFlexItem>
         <EuiFlexItem>
-          <EuiFormRow label="List nomor yang ingin dipilih">
+          <EuiFormRow label="List nomor yang ingin dipilih" helpText="DILARANG MELAKUKAN SPAMMING">
             <EuiSelect
               hasNoInitialSelection
+              onChange={(e)=> setMselect(e.target.value)}
+              value={mselect}
               options={[
                 { value: "talkshow", text: "Talkshow" },
                 { value: "minigame", text: "Minigame" },
