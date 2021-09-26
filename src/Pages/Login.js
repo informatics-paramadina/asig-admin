@@ -11,7 +11,6 @@ import {
 import { useHistory, withRouter } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-
 const Login = () => {
   const [field, setField] = useState({
     email: undefined,
@@ -21,7 +20,7 @@ const Login = () => {
     email: false,
     password: false,
   });
-  const [cookie, setCookie, removeCookie] = useCookies(['asig']);
+  const [cookie, setCookie] = useCookies(["asig"]);
   const history = useHistory();
 
   function fieldChange(e) {
@@ -34,27 +33,48 @@ const Login = () => {
   }
 
   function ButtonClick() {
-    let authemail = "bukasitik@gmail.com";
-    let authpass = "1";
+    let checkmail = false, checkpass = false, jenis_akun = "";
+    let listAuth = [
+      {
+        email: "divisi.talkshow@asig14.himti.my.id",
+        password: "t4lksh0wg0ks!",
+        jenis_akun: "talkshow",
+      },
+      {
+        email: "divisi.game@asig14.himti.my.id",
+        password: "v4l0r4ntbur1k!",
+        jenis_akun: "game"
+      }
+    ];
 
-    if(field.email != authemail)
-    {
-        setInvalid(invalid => ({...invalid, email: true}))
-        return ;
+    listAuth.forEach((auth)=>{
+      if(field.email === auth.email)
+      {
+        checkmail = true;
+        if(field.password === auth.password)
+        {
+          checkpass = true;
+          jenis_akun = auth.jenis_akun;
+        }
+      }
+    })
+
+    if (!checkmail) {
+      setInvalid((invalid) => ({ ...invalid, email: true }));
+      return;
     } else {
-        setInvalid(invalid => ({...invalid, email: false}))
+      setInvalid((invalid) => ({ ...invalid, email: false }));
     }
 
-    if(field.password != authpass)
-    {
-        setInvalid(invalid => ({...invalid, password: true}))
-        return ;
-    }else {
-        setInvalid(invalid => ({...invalid, password: false}))
+    if (!checkpass) {
+      setInvalid((invalid) => ({ ...invalid, password: true }));
+      return;
+    } else {
+      setInvalid((invalid) => ({ ...invalid, password: false }));
     }
-    history.push('home')
-    
-    setCookie('asig', 'authtest')
+    history.push("home");
+
+    setCookie("asig", jenis_akun);
     console.log(cookie);
   }
 
