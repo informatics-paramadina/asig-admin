@@ -1,4 +1,4 @@
-import { EuiDataGrid } from "@elastic/eui";
+import { EuiDataGrid, EuiImage, EuiText } from "@elastic/eui";
 import React, {
   Fragment,
   useCallback,
@@ -10,7 +10,39 @@ import React, {
   useRef,
 } from "react";
 
-const columns = [
+const gameColumns = [
+  {
+    id: "team_name",
+    displayAsText: "Nama Tim",
+    defaultSortDirection: "asc",
+  },
+  {
+    id: "team_logo",
+    displayAsText: "Logo",
+  },
+  {
+    id: "players",
+    displayAsText: "Pemain",
+  },
+];
+
+const miniColumns = [
+  {
+    id: "name",
+    displayAsText: "Nama",
+    defaultSortDirection: "asc",
+  },
+  {
+    id: "name_ingame",
+    displayAsText: "Nama Ingame",
+  },
+  {
+    id: "phone_number",
+    displayAsText: "Whatsapp",
+  },
+];
+
+const talkshowColumns = [
   {
     id: "name",
     displayAsText: "Nama",
@@ -28,9 +60,11 @@ const columns = [
 
 const DataContext = createContext();
 
-
-const SearchTable = ({ data }) => {
+const SearchTable = ({ data, typeData }) => {
   // ** Pagination config
+  const [columns, setColumns] = useState([]);
+  // Column visibility
+  const [visibleColumns, setVisibleColumns] = useState([]);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const onChangeItemsPerPage = useCallback(
     (pageSize) =>
@@ -56,14 +90,30 @@ const SearchTable = ({ data }) => {
     [setSortingColumns]
   );
 
-  // Column visibility
-  const [visibleColumns, setVisibleColumns] = useState(() =>
-    columns.map(({ id }) => id)
-  );
-
   const onColumnResize = useRef((eventData) => {
     // console.log(eventData);
   });
+
+  useEffect(() => {
+    //console.log(typeData);
+    if (typeData == "talkshow") {
+      setColumns(talkshowColumns);
+    } else if (typeData == "game") {
+      setColumns(gameColumns);
+    } else if (typeData == "mini") {
+      setColumns(miniColumns);
+    }
+  }, [typeData]);
+
+  useEffect(() => {
+    console.log(columns);
+    let arr = [];
+    columns.map((col) => {
+      console.log(col);
+      arr.push(col.id);
+    });
+    setVisibleColumns(arr);
+  }, [columns]);
 
   return (
     <DataContext.Provider value={data}>
@@ -74,7 +124,30 @@ const SearchTable = ({ data }) => {
         columnVisibility={{ visibleColumns, setVisibleColumns }}
         renderCellValue={({ rowIndex, columnId }) => {
           // console.log(data[rowIndex][columnId] + " " + columnId)
-          return data[rowIndex][columnId];
+          switch (columnId) {
+            case "team_logo":
+              return <EuiImage size={70} src={data[rowIndex][columnId]} />;
+              break;
+            case "players":
+              let players = data[rowIndex][columnId];
+              return (
+                <EuiText>
+                  {players.map((player, index) => {
+                    return (
+                      <p key={index}>
+                        - {player.name} [{player.name_ingame}] (
+                        {player.phone_number})
+                      </p>
+                    );
+                  })}
+                </EuiText>
+              );
+              break;
+
+            default:
+              return data[rowIndex][columnId];
+              break;
+          }
         }}
         inMemory={{ level: "sorting" }}
         sorting={{ columns: sortingColumns, onSort }}

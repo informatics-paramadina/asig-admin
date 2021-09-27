@@ -36,6 +36,11 @@ const Login = () => {
     let checkmail = false, checkpass = false, jenis_akun = "";
     let listAuth = [
       {
+        email: "jalurvip@asig14.himti.my.id",
+        password: "y44s1gy4m4nt4p!",
+        jenis_akun: "webdev"
+      },
+      {
         email: "divisi.talkshow@asig14.himti.my.id",
         password: "t4lksh0wg0ks!",
         jenis_akun: "talkshow",
@@ -44,12 +49,8 @@ const Login = () => {
         email: "divisi.game@asig14.himti.my.id",
         password: "v4l0r4ntbur1k!",
         jenis_akun: "game"
-      },
-      {
-        email: "jalurvip@asig14.himti.my.id",
-        password: "y44s1gy4m4nt4p!",
-        jenis_akun: "webdev"
       }
+      
     ];
 
     listAuth.forEach((auth)=>{

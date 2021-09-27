@@ -18,29 +18,30 @@ const Search = () => {
 
   function selectChange(e) {
     let val = e.target.value;
-    setSearchVal(val);
+    setSelectVal(val);
+    setData([]);
   }
 
   function searchChange(e) {
     let val = e.target.value;
     setSearchVal(val);
-    if(val !== "")
-    {
-        setSearchLoad(searchLoad => setSearchLoad(true));
-        axios
-      .get(
-        `https://api.himti.my.id/data/player/talkshow?id_pendaftaran=${val}`,
-        {
-          headers: {
-            Authorization: "asigasigasig",
-          },
-        }
-      )
-      .then((res) => {
-          setData(res.data)
-          setSearchLoad(searchLoad => setSearchLoad(false));
+    if (val !== "") {
+      setSearchLoad((searchLoad) => setSearchLoad(true));
+      axios
+        .get(
+          `https://api.himti.my.id/data/player/${selectVal}?search=${val}`,
+          {
+            headers: {
+              Authorization: "asigasigasig",
+            },
+          }
+        )
+        .then((res) => {
+          setData(res.data);
+          setSearchLoad((searchLoad) => setSearchLoad(false));
+          //console.log(res.data)
         })
-      .catch((err) => console.log(err));
+        .catch((err) => console.log(err));
     }
   }
 
@@ -55,23 +56,32 @@ const Search = () => {
       <EuiFormRow label="Tipe data">
         <EuiSelect
           options={[
+            {},
             {
-              value: "Talkshow",
-              text: "talkshow",
+              value: "talkshow",
+              text: "Talkshow",
+            },
+            {
+              value: "game",
+              text: "Valorant",
+            },
+            {
+              value: "mini",
+              text: "Minigame",
             },
           ]}
           value={selectVal}
           onChange={selectChange}
         />
       </EuiFormRow>
-      <EuiSpacer size={'s'}/>
+      <EuiSpacer size={"s"} />
       <EuiFieldSearch
         placeholder="Cari Data"
         value={searchVal}
         onChange={searchChange}
         isLoading={searchLoad}
       />
-      <SearchTable data={data}/>
+      <SearchTable data={data} typeData={selectVal} />
     </EuiPageTemplate>
   );
 };
