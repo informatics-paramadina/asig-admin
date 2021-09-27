@@ -3,15 +3,19 @@ import { useCookies } from "react-cookie";
 import { Route, BrowserRouter, Redirect } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
 import Login from "./Pages/Login";
+import Search from "./Pages/Search";
 
 const Routers = () => {
   return (
-    <BrowserRouter forceRefresh={true}>
+    <BrowserRouter>
       <LoginRoute path={"/"} exact>
         <Login />
       </LoginRoute>
       <PrivateRoute path={"/home"}>
         <Dashboard />
+      </PrivateRoute>
+      <PrivateRoute path={"/search"}>
+        <Search />
       </PrivateRoute>
     </BrowserRouter>
   );

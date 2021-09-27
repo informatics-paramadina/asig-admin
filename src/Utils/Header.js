@@ -9,18 +9,17 @@ import {
   EuiImage,
 } from "@elastic/eui";
 import logo from "../Images/blueasig.png";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory, withRouter } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 const Header = () => {
-    const history = useHistory();
-    const [cookie, setCookie, removeCookie] = useCookies(['asig']);
+  const history = useHistory();
+  const [cookie, setCookie, removeCookie] = useCookies(["asig"]);
 
-    function Logout()
-    {
-        removeCookie('asig');
-        history.location('/')
-    }
+  function Logout() {
+    removeCookie("asig");
+    history.push("/");
+  }
   return (
     <EuiHeader position="fixed">
       <EuiHeaderSectionItem border="right">
@@ -29,11 +28,17 @@ const Header = () => {
 
       <EuiHeaderSectionItem>
         <EuiHeaderLinks aria-label="App navigation links example">
-            <EuiHeaderLink onClick={() => Logout()}>Logout</EuiHeaderLink>
+          <NavLink to={"/home"}>
+            <EuiHeaderLink>Dashboard</EuiHeaderLink>
+          </NavLink>
+          <NavLink to={"/search"}>
+            <EuiHeaderLink>Search Data</EuiHeaderLink>
+          </NavLink>
+          <EuiHeaderLink onClick={() => Logout()}>Logout</EuiHeaderLink>
         </EuiHeaderLinks>
       </EuiHeaderSectionItem>
     </EuiHeader>
   );
 };
 
-export default Header;
+export default withRouter(Header);

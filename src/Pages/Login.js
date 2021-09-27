@@ -44,6 +44,11 @@ const Login = () => {
         email: "divisi.game@asig14.himti.my.id",
         password: "v4l0r4ntbur1k!",
         jenis_akun: "game"
+      },
+      {
+        email: "admin@gmail.com",
+        password: "1",
+        jenis_akun: "webdev"
       }
     ];
 

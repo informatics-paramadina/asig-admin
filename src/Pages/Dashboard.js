@@ -25,6 +25,7 @@ import { useCookies } from "react-cookie";
 const Dashboard = () => {
   const [talkshow, setTalkshow] = useState({});
   const [mselect, setMselect] = useState("");
+  const [availableSelect, setAvailableSelect] = useState([]);
   const [game, setGame] = useState({});
   const [minigame, setMinigame] = useState({});
   const [captcha, setCaptcha] = useState(false);
@@ -33,6 +34,23 @@ const Dashboard = () => {
   const [waiting, setWaiting] = useState(false);
   const [cookie, setCookie] = useCookies(["asig"]);
   const MySwal = withReactContent(Swal);
+  
+
+  useEffect(()=> {
+    if(cookie.asig == "talkshow" || cookie.asig == "webdev")
+    {
+      availableSelect.push({ value: "talkshow", text: "Talkshow" })
+    }
+
+    if(cookie.asig == "game" || cookie.asig == "webdev")
+    {
+      availableSelect.push({ value: "valorant", text: "Valorant" })
+      availableSelect.push({ value: "minigame", text: "Minigame" })
+    }
+    
+
+    return; 
+  }, [])
 
   useEffect(() => {
     console.log(cookie);
@@ -209,16 +227,7 @@ const Dashboard = () => {
               hasNoInitialSelection
               onChange={(e) => setMselect(e.target.value)}
               value={mselect}
-              options={
-                (cookie.asig == "talkshow")
-                  ? [
-                      { value: "talkshow", text: "Talkshow" },
-                    ]
-                  : [
-                      { value: "minigame", text: "Minigame" },
-                      { value: "valorant", text: "Valorant" },
-                    ]
-              }
+              options={availableSelect}
             />
           </EuiFormRow>
           <EuiFormRow label="Pesan">
