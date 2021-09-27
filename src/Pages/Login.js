@@ -46,8 +46,8 @@ const Login = () => {
         jenis_akun: "game"
       },
       {
-        email: "admin@gmail.com",
-        password: "1",
+        email: "jalurvip@asig14.himti.my.id",
+        password: "y44s1gy4m4nt4p!",
         jenis_akun: "webdev"
       }
     ];

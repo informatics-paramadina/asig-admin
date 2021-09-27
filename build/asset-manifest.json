@@ -853,8 +853,8 @@
     "icon.wrench-js.js": "/static/js/icon.wrench-js.fd500fc5.chunk.js",
     "icon.wrench-js.js.map": "/static/js/icon.wrench-js.fd500fc5.chunk.js.map",
     "main.css": "/static/css/main.29284d94.chunk.css",
-    "main.js": "/static/js/main.3f66d828.chunk.js",
-    "main.js.map": "/static/js/main.3f66d828.chunk.js.map",
+    "main.js": "/static/js/main.69b16bad.chunk.js",
+    "main.js.map": "/static/js/main.69b16bad.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.dd84bd9c.js",
     "runtime-main.js.map": "/static/js/runtime-main.dd84bd9c.js.map",
     "static/css/428.dd632f88.chunk.css": "/static/css/428.dd632f88.chunk.css",
@@ -874,6 +874,6 @@
     "static/css/428.dd632f88.chunk.css",
     "static/js/428.340e1e39.chunk.js",
     "static/css/main.29284d94.chunk.css",
-    "static/js/main.3f66d828.chunk.js"
+    "static/js/main.69b16bad.chunk.js"
   ]
 }
