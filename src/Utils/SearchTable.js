@@ -1,4 +1,4 @@
-import { EuiDataGrid, EuiImage, EuiText } from "@elastic/eui";
+import { EuiButton, EuiDataGrid, EuiImage, EuiText } from "@elastic/eui";
 import React, {
   Fragment,
   useCallback,
@@ -94,6 +94,18 @@ const SearchTable = ({ data, typeData }) => {
     // console.log(eventData);
   });
 
+  const trailingControlColumns = [
+    {
+      id: 'actions',
+      width: 100,
+      headerCellRender: () => null,
+      rowCellRender: ({rowIndex})=>{
+        console.log(data[rowIndex]['id_pendaftaran'])
+        return <EuiButton size={'s'}>hello</EuiButton>
+      }
+    }
+  ];
+
   useEffect(() => {
     //console.log(typeData);
     if (typeData == "talkshow") {
@@ -121,6 +133,7 @@ const SearchTable = ({ data, typeData }) => {
         aria-label="Data grid demo"
         columns={columns}
         rowCount={data.length}
+        trailingControlColumns={trailingControlColumns}
         columnVisibility={{ visibleColumns, setVisibleColumns }}
         renderCellValue={({ rowIndex, columnId }) => {
           // console.log(data[rowIndex][columnId] + " " + columnId)
