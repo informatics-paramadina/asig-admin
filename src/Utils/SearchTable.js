@@ -123,6 +123,17 @@ const FormEdit = ({
 
   return (
     <div>
+      {data[rowIndex].id_pendaftaran ? (
+        <EuiFormRow label="ID Pendaftaran">
+          <EuiFieldText
+            fullWidth
+            value={dataForm.id_pendaftaran}
+            readOnly
+          />
+        </EuiFormRow>
+      ) : (
+        ""
+      )}
       <EuiFormRow label="Nama">
         <EuiFieldText
           aria-label="name"
