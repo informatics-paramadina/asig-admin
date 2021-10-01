@@ -15,12 +15,19 @@ import Recaptcha from "react-recaptcha";
 import AsigLogo from "../Images/blueasig.png";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import moment from "moment";
 import axios from "axios";
+import { useCookies } from "react-cookie";
+
+const open = moment("2021-10-11 11:35:00");
+const close = moment("2021-10-11 12:30:00");
+const now = moment();
 
 const Certificate = () => {
   const [captchaVisible, setCaptchaVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [captcha, setCaptcha] = useState(false);
+  const [cookie, setCookie] = useCookies(["asig"]);
   const [data, setData] = useState({
     id_pendaftaran: "",
   });
@@ -143,20 +150,26 @@ const Certificate = () => {
         <EuiFieldText
           value={data.id_pendaftaran}
           onChange={changeValue}
+          disabled={Object.keys(cookie).length != 0 ? false : true }
           fullWidth
         />
       </EuiFormRow>
       <EuiSpacer />
-      {captchaVisible ? (
-        <Recaptcha
-          sitekey={process.env.REACT_APP_CAPTCHA_KEY}
-          render="explicit"
-          size="normal"
-          onloadCallback={testCallback}
-          verifyCallback={verifyCallback}
-          expiredCallback={expiredCallback}
-          theme="dark"
-        />
+      {(now.isSameOrAfter(open) && now.isSameOrBefore(close)) ||
+      Object.keys(cookie).length != 0 ? (
+        captchaVisible ? (
+          <Recaptcha
+            sitekey={process.env.REACT_APP_CAPTCHA_KEY}
+            render="explicit"
+            size="normal"
+            onloadCallback={testCallback}
+            verifyCallback={verifyCallback}
+            expiredCallback={expiredCallback}
+            theme="dark"
+          />
+        ) : (
+          ""
+        )
       ) : (
         ""
       )}
