@@ -48,7 +48,7 @@ const Certificate = () => {
     console.log(data);
     axios
       .get(
-        `https://api.himti.my.id/data/player/talkshow/${data.id_pendaftaran}`,
+        `https://api.himti.my.id/data/details/talkshow/${data.id_pendaftaran}`,
         {
           headers: {
             Authorization: "asigasigasig",

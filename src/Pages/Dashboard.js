@@ -8,6 +8,7 @@ import {
   EuiPageTemplate,
   EuiSelect,
   EuiSpacer,
+  EuiStat,
   EuiText,
   EuiTextArea,
 } from "@elastic/eui";
@@ -28,6 +29,11 @@ const Dashboard = () => {
   const [availableSelect, setAvailableSelect] = useState([]);
   const [game, setGame] = useState({});
   const [minigame, setMinigame] = useState({});
+  const [countData, setCountData] = useState({
+    talkshow: 0,
+    mini: 0,
+    game: 0,
+  })
   const [captcha, setCaptcha] = useState(false);
   const [blastmsg, setBlastmsg] = useState("");
   const [captchaVisible, setCaptchaVisible] = useState(false);
@@ -61,6 +67,7 @@ const Dashboard = () => {
         },
       })
       .then((res) => {
+        setCountData(countData => ({...countData, talkshow: res.data.length}))
         setTalkshow(res.data);
       });
     axios
@@ -70,7 +77,7 @@ const Dashboard = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        setCountData(countData => ({...countData, game: res.data.length}))
         setGame(res.data);
       });
     axios
@@ -80,6 +87,7 @@ const Dashboard = () => {
         },
       })
       .then((res) => {
+        setCountData(countData => ({...countData, mini: res.data.length}))
         setMinigame(res.data);
       });
     setTimeout(() => {
@@ -185,10 +193,11 @@ const Dashboard = () => {
     >
       <Header />
       <EuiFlexGrid columns={2}>
-        <EuiFlexItem style={{ height: 250 }}>
+        <EuiFlexItem style={{ height: 350 }}>
           <EuiText>
             <h3>Pendaftar Talkshow</h3>
           </EuiText>
+          <EuiStat title={countData.talkshow} isLoading={Object.keys(talkshow).length == 0}/>
           <EuiSpacer size={"s"} />
           {Object.keys(talkshow).length != 0 ? (
             <TalkshowTabel data={talkshow} />
@@ -196,10 +205,11 @@ const Dashboard = () => {
             <EuiLoadingContent lines={6} />
           )}
         </EuiFlexItem>
-        <EuiFlexItem style={{ height: 250 }}>
+        <EuiFlexItem style={{ height: 350 }}>
           <EuiText>
             <h3>Pendaftar Game</h3>
           </EuiText>
+          <EuiStat title={countData.game} isLoading={Object.keys(game).length == 0}/>
           <EuiSpacer size={"s"} />
           {Object.keys(game).length != 0 ? (
             <GameTable data={game} />
@@ -211,6 +221,7 @@ const Dashboard = () => {
           <EuiText>
             <h3>Pendaftar MiniGame</h3>
           </EuiText>
+          <EuiStat title={countData.mini} isLoading={Object.keys(minigame).length == 0}/>
           <EuiSpacer size={"s"} />
           {Object.keys(minigame).length != 0 ? (
             <Minigame data={minigame} />
