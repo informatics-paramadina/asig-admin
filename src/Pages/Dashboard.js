@@ -33,30 +33,26 @@ const Dashboard = () => {
     talkshow: 0,
     mini: 0,
     game: 0,
-  })
+  });
   const [captcha, setCaptcha] = useState(false);
   const [blastmsg, setBlastmsg] = useState("");
   const [captchaVisible, setCaptchaVisible] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [cookie, setCookie] = useCookies(["asig"]);
   const MySwal = withReactContent(Swal);
-  
 
-  useEffect(()=> {
-    if(cookie.asig == "talkshow" || cookie.asig == "webdev")
-    {
-      availableSelect.push({ value: "talkshow", text: "Talkshow" })
+  useEffect(() => {
+    if (cookie.asig == "talkshow" || cookie.asig == "webdev") {
+      availableSelect.push({ value: "talkshow", text: "Talkshow" });
     }
 
-    if(cookie.asig == "game" || cookie.asig == "webdev")
-    {
-      availableSelect.push({ value: "valorant", text: "Valorant" })
-      availableSelect.push({ value: "minigame", text: "Minigame" })
+    if (cookie.asig == "game" || cookie.asig == "webdev") {
+      availableSelect.push({ value: "valorant", text: "Valorant" });
+      availableSelect.push({ value: "minigame", text: "Minigame" });
     }
-    
 
-    return; 
-  }, [])
+    return;
+  }, []);
 
   useEffect(() => {
     console.log(cookie);
@@ -67,7 +63,10 @@ const Dashboard = () => {
         },
       })
       .then((res) => {
-        setCountData(countData => ({...countData, talkshow: res.data.length}))
+        setCountData((countData) => ({
+          ...countData,
+          talkshow: res.data.length,
+        }));
         setTalkshow(res.data);
       });
     axios
@@ -77,7 +76,7 @@ const Dashboard = () => {
         },
       })
       .then((res) => {
-        setCountData(countData => ({...countData, game: res.data.length}))
+        setCountData((countData) => ({ ...countData, game: res.data.length }));
         setGame(res.data);
       });
     axios
@@ -87,7 +86,7 @@ const Dashboard = () => {
         },
       })
       .then((res) => {
-        setCountData(countData => ({...countData, mini: res.data.length}))
+        setCountData((countData) => ({ ...countData, mini: res.data.length }));
         setMinigame(res.data);
       });
     setTimeout(() => {
@@ -95,6 +94,36 @@ const Dashboard = () => {
     }, 1000);
     return;
   }, []);
+
+  const downloadExcel = () => {
+    axios
+      .get("https://api.himti.my.id/xlsx", {
+        headers: {
+          Authorization: "asigasigasig",
+        },
+        responseType: 'blob'
+      })
+      .then(async (res) => {
+        // console.log(await res.data.text());
+        // Create blob link to download
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute(
+          "download",
+          `test.xlsx`
+        );
+
+        // Append to html link element page
+        document.body.appendChild(link);
+
+        // Start download
+        link.click();
+
+        // Clean up and remove the link
+        link.parentNode.removeChild(link);
+      });
+  };
 
   const testCallback = () => {
     console.log("captcha loaded");
@@ -192,12 +221,17 @@ const Dashboard = () => {
       }}
     >
       <Header />
+      <EuiButton onClick={downloadExcel}>Download Excel</EuiButton>
+      <EuiSpacer size="s"/>
       <EuiFlexGrid columns={2}>
         <EuiFlexItem style={{ height: 350 }}>
           <EuiText>
             <h3>Pendaftar Talkshow</h3>
           </EuiText>
-          <EuiStat title={countData.talkshow} isLoading={Object.keys(talkshow).length == 0}/>
+          <EuiStat
+            title={countData.talkshow}
+            isLoading={Object.keys(talkshow).length == 0}
+          />
           <EuiSpacer size={"s"} />
           {Object.keys(talkshow).length != 0 ? (
             <TalkshowTabel data={talkshow} />
@@ -209,7 +243,10 @@ const Dashboard = () => {
           <EuiText>
             <h3>Pendaftar Game</h3>
           </EuiText>
-          <EuiStat title={countData.game} isLoading={Object.keys(game).length == 0}/>
+          <EuiStat
+            title={countData.game}
+            isLoading={Object.keys(game).length == 0}
+          />
           <EuiSpacer size={"s"} />
           {Object.keys(game).length != 0 ? (
             <GameTable data={game} />
@@ -221,7 +258,10 @@ const Dashboard = () => {
           <EuiText>
             <h3>Pendaftar MiniGame</h3>
           </EuiText>
-          <EuiStat title={countData.mini} isLoading={Object.keys(minigame).length == 0}/>
+          <EuiStat
+            title={countData.mini}
+            isLoading={Object.keys(minigame).length == 0}
+          />
           <EuiSpacer size={"s"} />
           {Object.keys(minigame).length != 0 ? (
             <Minigame data={minigame} />

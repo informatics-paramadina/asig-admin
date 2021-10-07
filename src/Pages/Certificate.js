@@ -1,5 +1,6 @@
 import {
   EuiButton,
+  EuiCallOut,
   EuiEmptyPrompt,
   EuiFieldText,
   EuiFlexGroup,
@@ -19,8 +20,8 @@ import moment from "moment";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
-const open = moment("2021-10-11 11:35:00");
-const close = moment("2021-10-11 12:30:00");
+const open = moment("2021-10-11 11:00:00");
+const close = moment("2021-10-11 13:30:00");
 const now = moment();
 
 const Certificate = () => {
@@ -150,7 +151,7 @@ const Certificate = () => {
         <EuiFieldText
           value={data.id_pendaftaran}
           onChange={changeValue}
-          disabled={Object.keys(cookie).length != 0 ? false : true }
+          disabled={Object.keys(cookie).length != 0 ? false : true}
           fullWidth
         />
       </EuiFormRow>
@@ -175,8 +176,21 @@ const Certificate = () => {
       )}
       <EuiSpacer />
       <EuiButton isDisabled={!captcha} isLoading={loading} onClick={onSubmit}>
-        Unduh sertifikat
+        {(now.isSameOrAfter(open) && now.isSameOrBefore(close)) ? 'Unduh Sertifikat' : 'Cetak sertifikat ditutup'}
       </EuiButton>
+      <EuiSpacer />
+      <EuiCallOut title="Periode pencetakan sertifikat" color="success">
+        Periode pencetakan sertifikat dimulai pada tanggal {open.format('D-M-YYYY')} pada jam {open.format('H:mm')} sampai jam {close.format('H:mm')}
+      </EuiCallOut>
+      <EuiSpacer />
+      <EuiCallOut title="Nama kamu tidak sesuai?" iconType="questionInCircle">
+        <p>
+          Nama yang dicetak adalah nama saat pertama kali daftar, jika namamu
+          salah, silakan ajukan perbaikan dengan mengirim email ke <br/>
+          <h3>himti@paramadina.ac.id</h3>
+        </p>
+        <p>dengan subjek "Perbaikan Nama Sertifikat" lalu mencantumkan ID pendaftaran, nama lengkap, screenshot bukti hadir, dan nomor whatsapp.</p>
+      </EuiCallOut>
     </EuiPageTemplate>
   );
 };
