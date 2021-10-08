@@ -10,6 +10,9 @@ import {
 } from "@elastic/eui";
 import { useHistory, withRouter } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import Recaptcha from "react-recaptcha";
+
+let recaptchaInstance;
 
 const Login = () => {
   const [field, setField] = useState({
@@ -20,6 +23,8 @@ const Login = () => {
     email: false,
     password: false,
   });
+  const [ready, setReady] = useState(false);
+  const [captcha, setCaptcha] = useState(false);
   const [cookie, setCookie] = useCookies(["asig"]);
   const history = useHistory();
 
@@ -33,12 +38,18 @@ const Login = () => {
   }
 
   function ButtonClick() {
-    let checkmail = false, checkpass = false, jenis_akun = "";
+    if (!captcha) return;
+    recaptchaInstance.reset();
+    setCaptcha(false);
+
+    let checkmail = false,
+      checkpass = false,
+      jenis_akun = "";
     let listAuth = [
       {
         email: "jalurvip@asig14.himti.my.id",
         password: "y44s1gy4m4nt4p!",
-        jenis_akun: "webdev"
+        jenis_akun: "webdev",
       },
       {
         email: "divisi.talkshow@asig14.himti.my.id",
@@ -48,22 +59,19 @@ const Login = () => {
       {
         email: "divisi.game@asig14.himti.my.id",
         password: "v4l0r4ntbur1k!",
-        jenis_akun: "game"
-      }
-      
+        jenis_akun: "game",
+      },
     ];
 
-    listAuth.forEach((auth)=>{
-      if(field.email === auth.email)
-      {
+    listAuth.forEach((auth) => {
+      if (field.email === auth.email) {
         checkmail = true;
-        if(field.password === auth.password)
-        {
+        if (field.password === auth.password) {
           checkpass = true;
           jenis_akun = auth.jenis_akun;
         }
       }
-    })
+    });
 
     if (!checkmail) {
       setInvalid((invalid) => ({ ...invalid, email: true }));
@@ -83,6 +91,20 @@ const Login = () => {
     setCookie("asig", jenis_akun);
     console.log(cookie);
   }
+
+  const verifyCallback = function (response) {
+    setCaptcha(true);
+  };
+
+  const expiredCallback = () => {
+    setCaptcha(false);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setReady(true);
+    }, 1000);
+  }, []);
 
   return (
     <EuiPageTemplate
@@ -110,7 +132,22 @@ const Login = () => {
           />
         </EuiFormRow>
         <EuiSpacer />
-        <EuiButton onClick={ButtonClick}>Login</EuiButton>
+        {ready ? (
+          <Recaptcha
+            sitekey={process.env.REACT_APP_CAPTCHA_KEY}
+            ref={(e) => (recaptchaInstance = e)}
+            verifyCallback={verifyCallback}
+            expiredCallback={expiredCallback}
+            size="normal"
+            theme="dark"
+          />
+        ) : (
+          ""
+        )}
+        <EuiSpacer />
+        <EuiButton isDisabled={!captcha} onClick={ButtonClick}>
+          {!captcha ? "Please solve the captcha" : "Login"}
+        </EuiButton>
       </div>
     </EuiPageTemplate>
   );
