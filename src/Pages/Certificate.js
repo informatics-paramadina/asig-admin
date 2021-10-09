@@ -24,6 +24,8 @@ const open = moment("2021-10-11 11:00:00");
 const close = moment("2021-10-11 13:30:00");
 const now = moment();
 
+let recaptchaInstance;
+
 const Certificate = () => {
   const [captchaVisible, setCaptchaVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -45,6 +47,8 @@ const Certificate = () => {
   }
 
   function onSubmit() {
+    recaptchaInstance.reset();
+    setCaptcha(false);
     setLoading(true);
     console.log(data);
     axios
@@ -163,6 +167,7 @@ const Certificate = () => {
             sitekey={process.env.REACT_APP_CAPTCHA_KEY}
             render="explicit"
             size="normal"
+            ref={(e) => (recaptchaInstance = e)}
             onloadCallback={testCallback}
             verifyCallback={verifyCallback}
             expiredCallback={expiredCallback}
