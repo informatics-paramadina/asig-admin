@@ -21,7 +21,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 
 const open = moment("2021-10-11 11:00:00");
-const close = moment("2021-10-11 13:30:00");
+const close = moment("2021-10-11 14:30:00");
 const now = moment();
 
 let recaptchaInstance;
@@ -88,28 +88,33 @@ const Certificate = () => {
         headers: {
           Authorization: "asigasigasig",
         },
-        responseType: "blob",
       })
       .then(async (res) => {
         // console.log(await res.data.text());
         // Create blob link to download
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute(
-          "download",
-          `E-Certificate ${userDetail.name} - Talkshow ASIG-14.pdf`
-        );
+        // const url = window.URL.createObjectURL(new Blob([res.data]));
+        // const link = document.createElement("a");
+        // link.href = url;
+        // link.setAttribute(
+        //   "download",
+        //   `E-Certificate ${userDetail.name} - Talkshow ASIG-14.pdf`
+        // );
 
-        // Append to html link element page
-        document.body.appendChild(link);
+        // // Append to html link element page
+        // document.body.appendChild(link);
 
-        // Start download
-        link.click();
+        // // Start download
+        // link.click();
 
-        // Clean up and remove the link
-        link.parentNode.removeChild(link);
+        // // Clean up and remove the link
+        // link.parentNode.removeChild(link);
         setLoading(false);
+        return MySwal.fire({
+          icon: "success",
+          title: "Sertifikat berhasil dibuat!",
+          text: "Sertifikat Anda akan kami kirimkan melalui email, harap menunggu!",
+        });
+
       })
       .catch((err) => {
         setLoading(false);
@@ -181,20 +186,28 @@ const Certificate = () => {
       )}
       <EuiSpacer />
       <EuiButton isDisabled={!captcha} isLoading={loading} onClick={onSubmit}>
-        {(now.isSameOrAfter(open) && now.isSameOrBefore(close)) ? 'Unduh Sertifikat' : 'Cetak sertifikat ditutup'}
+        {now.isSameOrAfter(open) && now.isSameOrBefore(close)
+          ? "Unduh Sertifikat"
+          : "Cetak sertifikat ditutup"}
       </EuiButton>
       <EuiSpacer />
       <EuiCallOut title="Periode pencetakan sertifikat" color="success">
-        Periode pencetakan sertifikat dimulai pada tanggal {open.format('D-M-YYYY')} pada jam {open.format('H:mm')} sampai jam {close.format('H:mm')}
+        Periode pencetakan sertifikat dimulai pada tanggal{" "}
+        {open.format("D-M-YYYY")} pada jam {open.format("H:mm")} sampai jam{" "}
+        {close.format("H:mm")} <br/>
+        Sertifikat akan dikirim lewat email, mohon harap menunggu karena menyesuaikan antrian.
       </EuiCallOut>
       <EuiSpacer />
       <EuiCallOut title="Nama kamu tidak sesuai?" iconType="questionInCircle">
         <p>
           Nama yang dicetak adalah nama saat pertama kali daftar, jika namamu
-          salah, silakan ajukan perbaikan dengan mengirim email ke <br/>
+          salah, silakan ajukan perbaikan dengan mengirim email ke <br />
           <h3>himti@paramadina.ac.id</h3>
         </p>
-        <p>dengan subjek "Perbaikan Nama Sertifikat" lalu mencantumkan ID pendaftaran, nama lengkap, screenshot bukti hadir, dan nomor whatsapp.</p>
+        <p>
+          dengan subjek "Perbaikan Nama Sertifikat" lalu mencantumkan ID
+          pendaftaran, nama lengkap, <b>screenshot bukti hadir</b>, dan nomor whatsapp.
+        </p>
       </EuiCallOut>
     </EuiPageTemplate>
   );
