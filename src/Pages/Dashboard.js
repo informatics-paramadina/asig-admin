@@ -221,7 +221,7 @@ const Dashboard = () => {
       }}
     >
       <Header />
-      <EuiButton onClick={downloadExcel}>Download Excel</EuiButton>
+      <EuiButton onClick={downloadExcel} isDisabled={(cookie.asig == "talkshow" || cookie.asig == "game" || cookie.asig == "webdev") ? true : false }>Download Excel</EuiButton>
       <EuiSpacer size="s"/>
       <EuiFlexGrid columns={2}>
         <EuiFlexItem style={{ height: 350 }}>
