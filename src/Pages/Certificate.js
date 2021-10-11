@@ -160,7 +160,6 @@ const Certificate = () => {
         <EuiFieldText
           value={data.id_pendaftaran}
           onChange={changeValue}
-          disabled={Object.keys(cookie).length != 0 ? false : true}
           fullWidth
         />
       </EuiFormRow>

@@ -61,6 +61,11 @@ const Login = () => {
         password: "v4l0r4ntbur1k!",
         jenis_akun: "game",
       },
+      {
+        email: "panitia@asig.id",
+        password: "gatau",
+        jenis_akun: "panitia",
+      },
     ];
 
     listAuth.forEach((auth) => {
