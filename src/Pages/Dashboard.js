@@ -22,6 +22,7 @@ import Recaptcha from "react-recaptcha";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useCookies } from "react-cookie";
+import EmailBlast from "../Utils/EmailBlast";
 
 const Dashboard = () => {
   const [talkshow, setTalkshow] = useState({});
@@ -305,6 +306,12 @@ const Dashboard = () => {
             Kirim
           </EuiButton>
         </EuiFlexItem>
+        {cookie.asig == "talkshow" ? <EuiFlexItem>
+        <EuiText>
+            <h3>Blast Email (Talkshow Exclusive)</h3>
+          </EuiText>
+          <EmailBlast/>
+        </EuiFlexItem> : ''}
       </EuiFlexGrid>
     </EuiPageTemplate>
   );
